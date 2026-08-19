@@ -55,8 +55,6 @@ order_reviews:
 
 orders:
 
-"order_id","customer_id","order_status","order_purchase_timestamp","order_approved_at","order_delivered_carrier_date","order_delivered_customer_date","order_estimated_delivery_date"
-
 |Name|Type|
 |----|----|
 |order_id|String|
@@ -66,4 +64,29 @@ orders:
 |order_approved_at|DateTime|
 |order_delivered_carrier_date|DateTime|
 |order_delivered_customer_date|DateTime|
-|order_estimated_delivery_date|DateTime 
+|order_estimated_delivery_date|DateTime|
+
+products:
+
+|Name|Type|
+|----|----|
+|product_id|String|
+|product_category_name|String|
+|product_name_lenght|Int|
+|product_description_lenght|Int|
+|product_photos_qty|Int|
+|product_weight_g|Int|
+|product_length_cm|Int|
+|product_height_cm|Int|
+|product_width_cm|Int|
+
+sellers:
+
+|Name|Type|
+|----|----|
+|seller_id|String|
+|seller_zip_code_prefix|String|
+|seller_city|String|
+|seller_state"|String|
+
+product_category_name_translation.csv
