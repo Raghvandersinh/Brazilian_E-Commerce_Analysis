@@ -1,1 +1,3 @@
 /data
+queries/olist_database.duckdb
+queries/olist_database.duckdb.wal
