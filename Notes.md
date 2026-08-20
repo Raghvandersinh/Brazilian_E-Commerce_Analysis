@@ -1,92 +1,31 @@
-Olist Data Strcuture:
-customers: 
+# Tables (Star Schema):
+## Fact Table:
+1. Fact table is a central table that connects to various other tables(Dimensional Tables) via Foreign keys. It acts as a connector between Dimensional Tables.
+2. In this case the olist_orders acts as the fact table, since it connects to various dimensional table. 
 
-|Name|Type|
-|----|----|
-|customer_id|String|
-|customer_unique_id|String|
-|customer_zip_code_prefix|String|
-|customer_city|String|
-|customer_state|String|
+## Dimensional Tables:
+1. In this case our dimensional table would be, olist_order_payment, olist_customers, olist_order_review, olist_order_items. 
 
-geolocation:
+## Other Tables:
+1. Tables that don't fit the Star Schema, but have relationship with Dimensional Data. olist_geolocation, olist_sellers, olist_products, and product_category_name_translation. 
 
-|Name|Type|
-|----|----|
-|geolocation_zip_code_prefix|String|
-|geolocation_lat|Float|
-|geolocation_lng|Float|
-|geolocation_city|String|
-|geolocation_state|String|
+## Model diagram:
+1. ![alt text](DataModelRelationship.png)
 
-order_items:
 
-|Name|Type|
-|----|----|
-|order_id|String|
-|order_item_id|int|
-|product_id|String|
-|seller_id|String|
-|shipping_limit_date|DateTime|
-|price|Float|
-|freight_value|Float|
+# Business Problem:
 
-order_payments:
+1. Descriptive Analysis:
+    1. What is the most/least common payment type?
+    2. What location has the most/least sales?
+    3. What product is the most/least popular?
+    4. What product category is the most/least popular. 
+    5. What is the status of our review?
+2. Diagnostic Analysis:
+    1. Why is this the most/least used payment type?
+    2. Why does this location have the most/least sales?
+    3. Why is this product the most/least popular?
+    4. Why is the product category the most/least popular?
+    5. Why our review mostly (negative or positive)?
 
-|Name|Type|
-|----|----|
-|order_id|String|
-|payment_sequential|int|
-|payment_type|String|
-|payment_installments|int|
-|payment_value|Float|
-
-order_reviews:
-
-|Name|Type|
-|----|----|
-|review_id|String|
-|order_id|String|
-|review_score|int|
-|review_comment_title|String|
-|review_comment_message|String|
-|review_creation_date|DateTime|
-|review_answer_timestamp|DateTime|
-
-orders:
-
-|Name|Type|
-|----|----|
-|order_id|String|
-|customer_id|String|
-|order_status|String|
-|order_purchase_timestamp|DateTime|
-|order_approved_at|DateTime|
-|order_delivered_carrier_date|DateTime|
-|order_delivered_customer_date|DateTime|
-|order_estimated_delivery_date|DateTime|
-
-products:
-
-|Name|Type|
-|----|----|
-|product_id|String|
-|product_category_name|String|
-|product_name_lenght|Int|
-|product_description_lenght|Int|
-|product_photos_qty|Int|
-|product_weight_g|Int|
-|product_length_cm|Int|
-|product_height_cm|Int|
-|product_width_cm|Int|
-
-sellers:
-
-|Name|Type|
-|----|----|
-|seller_id|String|
-|seller_zip_code_prefix|String|
-|seller_city|String|
-|seller_state"|String|
-
-product_category_name_translation.csv
+3. Predictive Analysis... To be cont. 
