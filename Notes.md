@@ -17,7 +17,7 @@
 
 1. Descriptive Analysis:
     1. What is the most/least common payment type?
-    2. What location has the most/least sales?
+    2. What location has the most/least customers/sellers?
     3. What product is the most/least popular?
     4. What product category is the most/least popular. 
     5. What is the status of our review?

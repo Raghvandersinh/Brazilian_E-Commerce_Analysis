@@ -4,5 +4,15 @@
         "*.csv": "duckdb.dataFileViewer",
         "*.tsv": "duckdb.dataFileViewer",
         "*.xlsx": "duckdb.dataFileViewer"
-    }
+    },
+    "duckdb.databases": [
+        {
+            "alias": "olist_database",
+            "type": "file",
+            "path": "c:\\Projects\\Data_Analysis_Project\\Brazilian E-Commerce\\Brazilian_E-Commerce_Analysis\\queries\\olist_database.duckdb",
+            "readOnly": true,
+            "attached": true
+        }
+    ],
+    "duckdb.defaultDatabase": "olist_database"
 }
