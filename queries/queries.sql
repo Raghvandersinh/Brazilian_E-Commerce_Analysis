@@ -1,22 +1,31 @@
 /* Most/Least Common payment type */
+COPY(
 SELECT payment_type, COUNT(payment_type) as total_payment FROM olist_database.payments
 GROUP BY payment_type
-ORDER BY total_payment DESC;
+ORDER BY total_payment DESC
+) TO 'Common_Payment.csv' (HEADER, DELIMITER ',');
+
 
 /*Location with Most/Least Customers*/
+COPY(
 Select customer_city, customer_state, COUNT(customer_unique_id) as total_unique_customers 
 FROM olist_database.customers
 GROUP BY customer_city, customer_state
-ORDER by total_unique_customers DESC;
+ORDER by total_unique_customers DESC
+) TO 'Customer_Location.csv' (HEADER, DELIMITER ',');
 
 
 /*Location with Most/Least Customers*/
+COPY(
 Select seller_city, seller_state, COUNT(seller_id) as total_sellers 
 FROM olist_database.sellers
 GROUP BY seller_city, seller_state
-ORDER by total_sellers DESC;
+ORDER by total_sellers DESC
+) TO 'Seller_Location.csv' (HEADER, DELIMITER ',');
+
 
 /*Most/Least popular products_category ordered*/
+COPY(
 WITH get_product_eng_name AS (
     SELECT p.product_id, p.product_category_name, 
     pc.product_category_name_english as eng_name
@@ -29,8 +38,11 @@ FROM olist_database.order_items as oi
 JOIN get_product_eng_name as gp
 ON oi.product_id = gp.product_id
 GROUP BY gp.eng_name
-ORDER BY total_ordered DESC;
+ORDER BY total_ordered DESC
+) TO 'Popular_Product_Category.csv' (HEADER, DELIMITER ',');
 
+
+COPY(
 WITH get_product_eng_name AS (
     SELECT p.product_id, p.product_category_name, 
     pc.product_category_name_english as eng_name
@@ -44,9 +56,11 @@ FROM get_product_eng_name as p
 JOIN olist_database.order_items as oi
 ON p.product_id = oi.product_id
 GROUP BY p.product_id, p.eng_name
-ORDER BY total_order DESC;
+ORDER BY total_order DESC
+) TO 'Popular_Product.csv' (HEADER, DELIMITER ',');
 
 /* Most/Least Profitable products */
+COPY(
 WITH get_product_eng_name AS (
     SELECT p.product_id, p.product_category_name, 
     pc.product_category_name_english as eng_name
@@ -59,9 +73,11 @@ FROM get_product_eng_name as p
 JOIN olist_database.order_items as oi
 ON oi.product_id = p.product_id 
 GROUP BY p.product_id, p.eng_name
-ORDER BY profit DESC;
+ORDER BY profit DESC
+) TO 'Profitable_Product.csv' (HEADER, DELIMITER ',');
 
 /* Most/Least Profitable product_category */
+COPY(
 WITH get_product_eng_name AS (
     SELECT p.product_id, p.product_category_name, 
     pc.product_category_name_english as eng_name
@@ -74,4 +90,6 @@ FROM get_product_eng_name as p
 JOIN olist_database.order_items as oi
 ON oi.product_id = p.product_id 
 GROUP BY p.eng_name
-ORDER BY profit DESC;
+ORDER BY profit DESC
+) TO 'Profitable_Product_Category.csv' (HEADER, DELIMITER ',');
+
