@@ -34,15 +34,16 @@ WITH get_product_eng_name AS (
     ON p.product_category_name = pc.product_category_name
 )
 SELECT gp.eng_name, COUNT(oi.order_id) as total_ordered,
-SUM(oi.price - oi.freight_value) as profit
+SUM(oi.price + oi.freight_value) as product_value,
+ROW_NUMBER() OVER(ORDER BY COUNT(oi.order_id) ASC, SUM(oi.price + oi.freight_value) DESC) as ranked
 FROM olist_database.order_items as oi
 JOIN get_product_eng_name as gp
 ON oi.product_id = gp.product_id
 GROUP BY gp.eng_name
-ORDER BY total_ordered DESC, profit ASC
 ) TO 'data/queried_data/Popular_Product_Category.csv' (HEADER, DELIMITER ',');
 
 
+/* Most/Least popular product ordered*/
 COPY(
 WITH get_product_eng_name AS (
     SELECT p.product_id, p.product_category_name, 
@@ -51,13 +52,15 @@ WITH get_product_eng_name AS (
     JOIN olist_database.product_category as pc 
     ON p.product_category_name = pc.product_category_name
 )
-/* Most/Least popular product ordered*/
+
 Select p.product_id, p.eng_name, COUNT(oi.order_id) as total_order,
-SUM(oi.price - oi.freight_value) as profit
+SUM(oi.price + oi.freight_value) as product_value,
+ROW_NUMBER() OVER(ORDER BY COUNT(oi.order_id) ASC, SUM(oi.price + oi.freight_value) DESC) as ranked
 FROM get_product_eng_name as p
 JOIN olist_database.order_items as oi
 ON p.product_id = oi.product_id
 GROUP BY p.product_id, p.eng_name
-ORDER BY total_order DESC, profit ASC
 ) TO 'data/queried_data/Popular_Product.csv' (HEADER, DELIMITER ',');
+
+
 
