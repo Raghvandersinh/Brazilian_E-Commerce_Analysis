@@ -62,5 +62,27 @@ ON p.product_id = oi.product_id
 GROUP BY p.product_id, p.eng_name
 ) TO 'data/queried_data/Popular_Product.csv' (HEADER, DELIMITER ',');
 
-
+COPY(
+WITH get_product_eng_name AS (
+    SELECT p.product_id, p.product_category_name, 
+    pc.product_category_name_english as eng_name
+    FROM olist_database.products as p 
+    JOIN olist_database.product_category as pc 
+    ON p.product_category_name = pc.product_category_name
+),
+get_ordered_product AS(
+    SELECT gp.product_id, gp.eng_name, oi.order_id 
+    FROM get_product_eng_name gp
+    JOIN olist_database.order_items oi ON gp.product_id = oi.product_id
+),
+get_order_review AS (
+    SELECT gop.product_id, gop.eng_name, orr.review_score, orr.review_comment_message,
+    orr.review_comment_title, 
+    COUNT(review_id) OVER(PARTITION BY gop.product_id, orr.review_score) as count_score
+    FROM get_ordered_product gop
+    JOIN olist_database.order_reviews orr 
+    ON orr.order_id = gop.order_id
+)
+SELECT * FROM get_order_review
+) TO 'data/queried_data/Product_Review.csv' (HEADER, DELIMITER ',');
 
