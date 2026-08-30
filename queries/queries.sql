@@ -86,3 +86,4 @@ get_order_review AS (
 SELECT * FROM get_order_review
 ) TO 'data/queried_data/Product_Review.csv' (HEADER, DELIMITER ',');
 
+SELECT * FROM olist_database.customers;
