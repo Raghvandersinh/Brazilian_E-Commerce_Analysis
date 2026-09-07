@@ -33,7 +33,7 @@ WITH get_product_eng_name AS (
     JOIN olist_database.product_category as pc 
     ON p.product_category_name = pc.product_category_name
 )
-SELECT gp.eng_name, COUNT(oi.order_id) as total_ordered,
+SELECT gp.eng_name,COUNT(oi.order_id) as total_ordered,
 SUM(oi.price + oi.freight_value) as product_value,
 ROW_NUMBER() OVER(ORDER BY COUNT(oi.order_id) ASC, SUM(oi.price + oi.freight_value) DESC) as ranked
 FROM olist_database.order_items as oi
@@ -62,6 +62,7 @@ ON p.product_id = oi.product_id
 GROUP BY p.product_id, p.eng_name
 ) TO 'data/queried_data/Popular_Product.csv' (HEADER, DELIMITER ',');
 
+/* Products with best and worst reviews */
 COPY(
 WITH get_product_eng_name AS (
     SELECT p.product_id, p.product_category_name, 
@@ -86,4 +87,66 @@ get_order_review AS (
 SELECT * FROM get_order_review
 ) TO 'data/queried_data/Product_Review.csv' (HEADER, DELIMITER ',');
 
-SELECT * FROM olist_database.customers;
+/*Most Product Ordered by year*/
+COPY(
+WITH get_product_eng_name AS (
+    SELECT p.product_id, p.product_category_name,
+    pc.product_category_name_english as eng_name
+    FROM olist_database.products as p 
+    JOIN olist_database.product_category as pc 
+    ON p.product_category_name = pc.product_category_name
+),
+get_product_order_id AS (
+SELECT gp.eng_name, oi.order_id, gp.product_id, SUM(oi.freight_value + oi.price) as profit
+FROM olist_database.order_items as oi
+JOIN get_product_eng_name as gp
+ON oi.product_id = gp.product_id
+GROUP BY 1,2,3
+
+),
+get_delivered_date AS (
+SELECT STRFTIME(o.order_delivered_customer_date, '%Y-%m') as delivered_date, gp.eng_name, gp.product_id,
+gp.profit, COUNT(o.order_id) as total_ordered
+FROM olist_database.orders as o
+JOIN get_product_order_id as gp
+ON gp.order_id = o.order_id
+GROUP BY 1,2,3,4
+ORDER BY delivered_date
+)
+SELECT delivered_date, product_id, eng_name, MAX(total_ordered) as total_ordered, MIN(profit) as price
+FROM get_delivered_date 
+where delivered_date IS NOT NULL
+GROUP BY 1,2,3
+) TO 'data/queried_data/Most_Popular_Product_Ordered_Trend.csv' (HEADER, DELIMITER ',');
+
+/*Least Product Ordered by year*/
+COPY(
+WITH get_product_eng_name AS (
+    SELECT p.product_id, p.product_category_name,
+    pc.product_category_name_english as eng_name
+    FROM olist_database.products as p 
+    JOIN olist_database.product_category as pc 
+    ON p.product_category_name = pc.product_category_name
+),
+get_product_order_id AS (
+SELECT gp.eng_name, oi.order_id, gp.product_id, SUM(oi.freight_value + oi.price) as profit
+FROM olist_database.order_items as oi
+JOIN get_product_eng_name as gp
+ON oi.product_id = gp.product_id
+GROUP BY 1,2,3
+
+),
+get_delivered_date AS (
+SELECT STRFTIME(o.order_delivered_customer_date, '%Y-%m') as delivered_date, gp.eng_name, gp.product_id,
+gp.profit, COUNT(o.order_id) as total_ordered
+FROM olist_database.orders as o
+JOIN get_product_order_id as gp
+ON gp.order_id = o.order_id
+GROUP BY 1,2,3,4
+ORDER BY delivered_date
+)
+SELECT delivered_date, product_id, eng_name, MAX(total_ordered) as total_ordered, 
+MIN(profit) as price FROM get_delivered_date 
+where delivered_date IS NOT NULL
+GROUP BY 1,2,3
+) TO 'data/queried_data/Most_Popular_Product_Ordered_Trend.csv' (HEADER, DELIMITER ',');
