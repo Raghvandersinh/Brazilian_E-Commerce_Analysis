@@ -180,6 +180,89 @@ ORDER BY delivered_date ASC
 
 
 
+/*---------------------------------------------------------------------------------------------*/
+/* Most Profited Product By Year */
+/*---------------------------------------------------------------------------------------------*/
+COPY(
+WITH get_product_eng_name AS (
+    SELECT p.product_id, p.product_category_name,
+    pc.product_category_name_english as eng_name
+    FROM olist_database.products as p 
+    JOIN olist_database.product_category as pc 
+    ON p.product_category_name = pc.product_category_name
+),
+get_product_order_id AS (
+    SELECT gp.eng_name, oi.order_id, gp.product_id, SUM(oi.freight_value + oi.price) as profit
+    FROM olist_database.order_items as oi
+    JOIN get_product_eng_name as gp
+    ON oi.product_id = gp.product_id
+    GROUP BY 1,2,3
+),
+get_delivered_date AS (
+    SELECT STRFTIME(o.order_delivered_customer_date, '%Y-%m') as delivered_date, gp.eng_name, gp.product_id,
+    gp.profit, COUNT(o.order_id) as total_ordered
+    FROM olist_database.orders as o
+    JOIN get_product_order_id as gp
+    ON gp.order_id = o.order_id
+    GROUP BY 1,2,3,4
+    ORDER BY delivered_date
+),
+ranked_product AS (
+    SELECT delivered_date, product_id, eng_name, total_ordered, profit, (profit * total_ordered) as most_profited,
+    ROW_NUMBER() OVER(PARTITION BY delivered_date ORDER BY (profit * total_ordered) DESC) as ranked_profit
+    FROM get_delivered_date 
+    where delivered_date IS NOT NULL
+)
+SELECT delivered_date, product_id, eng_name, total_ordered, profit, most_profited
+ranked_profit
+FROM ranked_product
+Where ranked_profit = 1
+ORDER BY delivered_date ASC
+) TO 'data/queried_data/Most_Popular_Product_Profited_Trend.csv' (HEADER, DELIMITER ',');
+
+
+/*---------------------------------------------------------------------------------------------*/
+/* Least Profited Product */
+/*---------------------------------------------------------------------------------------------*/
+
+COPY(
+WITH get_product_eng_name AS (
+    SELECT p.product_id, p.product_category_name,
+    pc.product_category_name_english as eng_name
+    FROM olist_database.products as p 
+    JOIN olist_database.product_category as pc 
+    ON p.product_category_name = pc.product_category_name
+),
+get_product_order_id AS (
+    SELECT gp.eng_name, oi.order_id, gp.product_id, SUM(oi.freight_value + oi.price) as profit
+    FROM olist_database.order_items as oi
+    JOIN get_product_eng_name as gp
+    ON oi.product_id = gp.product_id
+    GROUP BY 1,2,3
+),
+get_delivered_date AS (
+    SELECT STRFTIME(o.order_delivered_customer_date, '%Y-%m') as delivered_date, gp.eng_name, gp.product_id,
+    gp.profit, COUNT(o.order_id) as total_ordered
+    FROM olist_database.orders as o
+    JOIN get_product_order_id as gp
+    ON gp.order_id = o.order_id
+    GROUP BY 1,2,3,4
+    ORDER BY delivered_date
+),
+ranked_product AS (
+    SELECT delivered_date, product_id, eng_name, total_ordered, profit, (profit * total_ordered) as least_profited,
+    Row_Number() OVER(PARTITION BY delivered_date ORDER BY (profit * total_ordered)) as ranked_profits
+    FROM get_delivered_date
+    where delivered_date IS NOT NULL
+)
+SELECT delivered_date, product_id, eng_name, total_ordered, profit, least_profited
+ranked_profits
+FROM ranked_product
+where ranked_profits = 1
+ORDER BY delivered_date ASC
+) TO 'data/queried_data/Least_Popular_Product_Profited_Trend.csv' (HEADER, DELIMITER ',');
+
+
 /*-------------------------------------------------------------------------------------------*/
 /*TEST*/
 /*-------------------------------------------------------------------------------------------*/
