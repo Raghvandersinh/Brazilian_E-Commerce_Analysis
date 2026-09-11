@@ -262,6 +262,16 @@ where ranked_profits = 1
 ORDER BY delivered_date ASC
 ) TO 'data/queried_data/Least_Popular_Product_Profited_Trend.csv' (HEADER, DELIMITER ',');
 
+/*-------------------------------------------------------------------------------------------*/
+/*Profit Trend*/
+/*-------------------------------------------------------------------------------------------*/
+COPY(
+    SELECT STRFTIME(o.order_delivered_customer_date, '%Y-%m'), SUM(oi.freight_value + oi.price) as profit 
+    FROM olist_database.order_items as oi
+    JOIN olist_database.orders as o
+    ON o.order_id = oi.order_id
+    GROUP BY 1
+) TO 'data/queried_data/Profit_Trend.csv' (HEADER, DELIMITER ',');
 
 /*-------------------------------------------------------------------------------------------*/
 /*TEST*/
