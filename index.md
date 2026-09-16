@@ -31,18 +31,14 @@
     1. ~2% of user bases uses debit cards. So optimizing it would provide negligible ROI.
 
 ## Which products/product categories were the most/least Ordered?
-### What product was most Ordered?
+![alt text](img/Most_Least_Ordered_Product.png)
+### What product and product category was most Ordered?
 1. 
 
 ## Which Location has the Most/Least Customers/Sellers?
 ![alt text](img/Popular_Customer_Seller_Location.png)
-### What does the Dashboard say?
-1. From the dashboard we can see:
-    1. **Sao Paulo(State) and Sao Paulo(City)** both contains the most customers and sellers. 
-    2. **Rio de Janeiro(State) and Rio de Janeiro(City)** contains the second most customers and **PR(State) and Curitaba(City)** contains the second most sellers.
-    3. **MG(State) and Belo Horizonte(City in MG)**  third most state with customers and seller, and **MG(State) and Rio De Janeiro(City)** Contains the third most sellers. 
-    4. **RS(State) and brasilia(capital city of brazil)** Contains the fourth most customers and **SC(State) and Belo Horizonte(City in MG)** contains the most fourth sellers. 
-    5. **PR(State) and Curitiba(City)** contains the fifth most customers, and **RJ(State) and Ribeirao Preto(City)** contains the fifth most sellers. 
+### What does this tell us about Olist's geography?
+1. From the bar chart we can see that the same four states: SP, RJ, MG, and PR are dominating both customers and sellers populations. While we have outliers such as RS which has the fourth most customers and SC which has the fourth most sellers. 
 
 ### What should we do?
 1. We should redistribute some of the sellers from lower populated cities and states to states and city with higher customers. For example: 

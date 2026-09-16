@@ -12,9 +12,9 @@ ORDER BY total_payment DESC
 /*-------------------------------------------------------------------------------------------------*/
 
 COPY(
-Select customer_city, customer_state, COUNT(customer_unique_id) as total_unique_customers 
+Select customer_zip_code_prefix, customer_city, customer_state, COUNT(customer_unique_id) as total_unique_customers 
 FROM olist_database.customers
-GROUP BY customer_city, customer_state
+GROUP BY customer_zip_code_prefix, customer_city, customer_state
 ORDER by total_unique_customers DESC
 ) TO 'data/queried_data/Customer_Location.csv' (HEADER, DELIMITER ',');
 
@@ -23,9 +23,9 @@ ORDER by total_unique_customers DESC
 /*-------------------------------------------------------------------------------------------------*/
 
 COPY(
-Select seller_city, seller_state, COUNT(seller_id) as total_sellers 
+Select seller_zip_code_prefix,seller_city, seller_state, COUNT(seller_id) as total_sellers 
 FROM olist_database.sellers
-GROUP BY seller_city, seller_state
+GROUP BY seller_zip_code_prefix,seller_city, seller_state
 ORDER by total_sellers DESC
 ) TO 'data/queried_data/Seller_Location.csv' (HEADER, DELIMITER ',');
 
@@ -301,3 +301,7 @@ get_delivered_date AS (
     ORDER BY delivered_date
 )
 SELECT DISTINCT delivered_date FROM get_delivered_date;
+
+COPY(
+Select DISTINCT * FROM olist_database.geolocation
+) TO 'data/queried_data/geolocations.csv' (FORMAT CSV,HEADER, DELIMITER ',', FORCE_QUOTE *);
