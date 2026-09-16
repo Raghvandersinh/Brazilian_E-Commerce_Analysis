@@ -7,27 +7,6 @@ GROUP BY payment_type
 ORDER BY total_payment DESC
 ) TO 'data/queried_data/Common_Payment.csv' (HEADER, DELIMITER ',');
 
-/*-------------------------------------------------------------------------------------------------*/
-/*Location with Most/Least Customers*/
-/*-------------------------------------------------------------------------------------------------*/
-
-COPY(
-Select customer_zip_code_prefix, customer_city, customer_state, COUNT(customer_unique_id) as total_unique_customers 
-FROM olist_database.customers
-GROUP BY customer_zip_code_prefix, customer_city, customer_state
-ORDER by total_unique_customers DESC
-) TO 'data/queried_data/Customer_Location.csv' (HEADER, DELIMITER ',');
-
-/*-------------------------------------------------------------------------------------------------*/
-/*Location with Most/Least Customers*/
-/*-------------------------------------------------------------------------------------------------*/
-
-COPY(
-Select seller_zip_code_prefix,seller_city, seller_state, COUNT(seller_id) as total_sellers 
-FROM olist_database.sellers
-GROUP BY seller_zip_code_prefix,seller_city, seller_state
-ORDER by total_sellers DESC
-) TO 'data/queried_data/Seller_Location.csv' (HEADER, DELIMITER ',');
 
 /*-------------------------------------------------------------------------------------------------*/
 /*Most/Least popular products_category ordered*/
@@ -274,6 +253,54 @@ COPY(
 ) TO 'data/queried_data/Profit_Trend.csv' (HEADER, DELIMITER ',');
 
 /*-------------------------------------------------------------------------------------------*/
+/*Unique Brazil GeoLocations*/
+/*-------------------------------------------------------------------------------------------*/
+COPY(
+Select DISTINCT MAX(geolocation_zip_code_prefix), geolocation_state, geolocation_city
+,MAX(geolocation_lat), MAX(geolocation_lng)
+FROM olist_database.geolocation
+GROUP BY 2,3
+) TO 'data/queried_data/geolocations.csv' (FORMAT CSV,HEADER, DELIMITER ',', FORCE_QUOTE *);
+
+/*-------------------------------------------------------------------------------------------*/
+/*Total Unique Customers per Location with parallels*/
+/*-------------------------------------------------------------------------------------------*/
+COPY(
+WITH get_unique_customers AS(
+    Select customer_zip_code_prefix, customer_city, customer_state, 
+    COUNT(customer_unique_id) as total_unique_customers,
+    FROM olist_database.customers 
+    GROUP BY 1,2,3
+    ORDER by total_unique_customers DESC
+)
+Select c.customer_zip_code_prefix, c.customer_city, c.customer_state, c.total_unique_customers,
+MAX(g.geolocation_lat) as single_lat, MAX(g.geolocation_lng) as single_lng
+FROM get_unique_customers c
+JOIN olist_database.geolocation g ON c.customer_zip_code_prefix = g.geolocation_zip_code_prefix
+GROUP BY 1,2,3,4
+ORDER by total_unique_customers DESC
+) TO 'data/queried_data/Customer_Location.csv' (HEADER, DELIMITER ',');
+
+/*-------------------------------------------------------------------------------------------------*/
+/*Location with Most/Least Sellers with parallels*/
+/*-------------------------------------------------------------------------------------------------*/
+
+COPY(
+WITH get_total_unique_sellers AS(
+    Select s.seller_zip_code_prefix,s.seller_city, s.seller_state, COUNT(s.seller_id) as total_sellers,
+    FROM olist_database.sellers s
+    GROUP BY 1,2,3
+    ORDER by total_sellers DESC
+)
+Select s.seller_zip_code_prefix,s.seller_city, s.seller_state, s.total_sellers,
+MAX(g.geolocation_lat) as single_lat, MAX(g.geolocation_lng) as single_lng
+FROM get_total_unique_sellers s
+JOIN olist_database.geolocation g ON g.geolocation_zip_code_prefix = s.seller_zip_code_prefix
+GROUP BY 1,2,3,4
+ORDER by total_sellers DESC
+) TO 'data/queried_data/Seller_Location.csv' (HEADER, DELIMITER ',');
+
+/*-------------------------------------------------------------------------------------------*/
 /*TEST*/
 /*-------------------------------------------------------------------------------------------*/
 
@@ -303,5 +330,8 @@ get_delivered_date AS (
 SELECT DISTINCT delivered_date FROM get_delivered_date;
 
 COPY(
-Select DISTINCT * FROM olist_database.geolocation
+Select DISTINCT geolocation_zip_code_prefix, geolocation_state, geolocation_city
+,MAX(geolocation_lat), MAX(geolocation_lng)
+FROM olist_database.geolocation
+GROUP BY 1,2,3
 ) TO 'data/queried_data/geolocations.csv' (FORMAT CSV,HEADER, DELIMITER ',', FORCE_QUOTE *);
