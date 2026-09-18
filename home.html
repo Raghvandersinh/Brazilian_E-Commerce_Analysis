@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home · Seller & Customer States</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 1.5rem;
+        }
+
+        .home-container {
+            width: 100%;
+            max-width: 1800px;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .home-header {
+            padding: 1.5rem 2rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e9eef3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .home-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #0f172a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.01em;
+        }
+
+        .home-header .badge {
+            background: #eef2ff;
+            color: #1e40af;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            border: 1px solid #c7d2fe;
+        }
+
+        .states-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            background: #f8fafc;
+            flex: 1;
+        }
+
+        .state-panel {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            min-width: 0;
+        }
+
+        .state-panel:first-child {
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .panel-label {
+            padding: 0.75rem 1.5rem;
+            background: #f1f5f9;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #334155;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .iframe-wrapper {
+            flex: 1;
+            background: #ffffff;
+            width: 100%;
+            min-height: 80vh;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 80vh;
+            border: 0;
+            display: block;
+            background: white;
+        }
+
+        @media (max-width: 800px) {
+            .states-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .state-panel:first-child {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .iframe-wrapper,
+            .iframe-wrapper iframe {
+                min-height: 60vh;
+            }
+
+            .home-header h1 {
+                font-size: 1.4rem;
+            }
+
+            body {
+                padding: 0.8rem;
+            }
+        }
+
+        .iframe-wrapper iframe:not([src]) {
+            background: #f1f5f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <div class="home-header">
+            <h1>Seller & Customer States</h1>
+            <div class="badge">interactive · embedded · no redirect</div>
+        </div>
+        <div class="states-grid">
+            <div class="state-panel">
+                <div class="panel-label">
+                    Seller state · img/sellers_state.html
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe 
+                        src="img/sellers_state.html" 
+                        title="Seller State – interactive interface"
+                        loading="lazy"
+                        sandbox="allow-scripts allow-forms allow-same-origin allow-modals allow-popups allow-downloads"
+                    ></iframe>
+                </div>
+            </div>
+            <div class="state-panel">
+                <div class="panel-label">
+                    Customer state · img/customers_state.html
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe 
+                        src="img/customers_state.html" 
+                        title="Customer State – interactive interface"
+                        loading="lazy"
+                        sandbox="allow-scripts allow-forms allow-same-origin allow-modals allow-popups allow-downloads"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
