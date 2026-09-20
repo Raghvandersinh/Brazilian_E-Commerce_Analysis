@@ -33,10 +33,17 @@
 ## Which products/product categories were the most/least Ordered?
 ![alt text](img/Most_Least_Ordered_Product.png)
 ### What product and product category was most Ordered?
+![alt text](img/Most_Ordered_Product_Trend.png)
 1. **Product**:
-    1. Most:
-        1. furniture decor is the most ordered product
-
+    1. **What is the Most Ordered Product?**:
+        1. From 2016-2018, aca2eb7d00ea1a7b8ebd4e68314663af(a Furniture Decor) is the most ordered of all time, and from the trend we can see 2018-01 and started to trend downward hitting its low at 2016-06.
+    2. **Why was it popular and why did it start losing popularity?**
+        1. From the good reviews, we can see that the customers loved the product. It is easy to assemble, delivered on time, and looks pretty. 
+        ![alt text](img/Product_Reviews/Furniture_Decor_Most_1.png)
+        2. From the bad reviews, customers were dissatisfied by the service rather then the product. Complaints mainly stems from customers not receiving the product they desired.
+        ![alt text](img/Product_Reviews/Furniture_Decor_Most_WorstReview.png)
+    2. Least/Most Expensive:
+        1. 
 
 
 ## Which State has the Most/Least Customers/Sellers?
