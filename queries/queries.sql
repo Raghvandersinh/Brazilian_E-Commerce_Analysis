@@ -146,7 +146,7 @@ get_delivered_date AS (
 ),
 ranked_product AS (
     SELECT delivered_date, product_id, eng_name, total_ordered, profit,
-    Row_Number() OVER(PARTITION BY delivered_date ORDER BY total_ordered, profit) as ranked_ordered 
+    Row_Number() OVER(PARTITION BY delivered_date ORDER BY total_ordered ASC, profit DESC) as ranked_ordered 
     FROM get_delivered_date
     where delivered_date IS NOT NULL
 )
@@ -335,3 +335,9 @@ Select DISTINCT geolocation_zip_code_prefix, geolocation_state, geolocation_city
 FROM olist_database.geolocation
 GROUP BY 1,2,3
 ) TO 'data/queried_data/geolocations.csv' (FORMAT CSV,HEADER, DELIMITER ',', FORCE_QUOTE *);
+
+
+Select p.product_id, o.freight_value + o.price From olist_database.products p 
+JOIN olist_database.order_items o 
+ON o.product_id = p.product_id
+WHERE p.product_id = '1bdf5e6731585cf01aa8169c7028d6ad'
