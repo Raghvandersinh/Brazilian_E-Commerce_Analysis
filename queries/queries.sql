@@ -129,7 +129,8 @@ WITH get_product_eng_name AS (
     ON p.product_category_name = pc.product_category_name
 ),
 get_product_order_id AS (
-    SELECT gp.eng_name, oi.order_id, gp.product_id, SUM(oi.freight_value + oi.price) as profit
+    SELECT gp.eng_name, oi.order_id, gp.product_id, SUM(oi.freight_value + oi.price) as profit,
+    COUNT(oi.order_id) as total_orders
     FROM olist_database.order_items as oi
     JOIN get_product_eng_name as gp
     ON oi.product_id = gp.product_id
@@ -137,7 +138,7 @@ get_product_order_id AS (
 ),
 get_delivered_date AS (
     SELECT STRFTIME(o.order_delivered_customer_date, '%Y-%m') as delivered_date, gp.eng_name, gp.product_id,
-    gp.profit, COUNT(o.order_id) as total_ordered
+    gp.profit, min(gp.total_orders) as total_ordered
     FROM olist_database.orders as o
     JOIN get_product_order_id as gp
     ON gp.order_id = o.order_id
