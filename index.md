@@ -38,7 +38,7 @@
     1. **What is the Most Ordered Product?**:
         1. From 2016-2018, **aca2eb7d00ea1a7b8ebd4e68314663af(a Furniture Decor, going to call it FD)** is the most ordered of all time, and from the trend we can see 2018-01 and started to trend downward hitting its low at 2016-06.
 
-        2. But from the Trend we can see that **Watches Gift (going to call it WG)** is the most ordered product till the latest date at 2018-10(this is when Olist stopped giving out public data)
+        2. But from the Trend we can see that **Watches Gift (going to call it WG)** is the most ordered product  recently date at 2018-10(this is when Olist stopped giving out public data)
 
         2. **Why was it popular and why did it start losing popularity?**
             1. **FD**
@@ -84,6 +84,5 @@
 ![alt text](img/Seller_Map.png)
 
 ### What should we do?
-1. While it is positive that both sellers and customers are concentrated in southeastern Brazil, the distribution of sellers within that region should be improved. Specifically, this concerns RJ (2nd in customers, 5th in sellers), PR (2nd in sellers, 5th in customers), SC (4th in sellers, but not top 5 in customers), and RS (4th in customers, but not top 5 in sellers). But overall 
-
+1. While it is positive that both sellers and customers are concentrated in southeastern Brazil, the distribution of sellers within that region should be improved. Specifically, this concerns RJ (2nd in customers, 5th in sellers), PR (2nd in sellers, 5th in customers), SC (4th in sellers, but not top 5 in customers), and RS (4th in customers, but not top 5 in sellers) to maximize profits and demands.
 ---
